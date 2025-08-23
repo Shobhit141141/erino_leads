@@ -6,12 +6,13 @@ const cookieParser = require("cookie-parser");
 const logger = require("./src/utils/logger");
 const { connectDB } = require("./src/config/db");
 const routes = require("./src/routes/index.route.js");
+const CONSTANTS = require("./src/config/constants.js");
 require("dotenv").config();
 
 const app = express();
 
 const corsOptions = {
-  origin: process.env.CLIENT_URL || "http://localhost:5173",
+  origin: CONSTANTS.CLIENT_URL || "http://localhost:5173",
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -26,7 +27,7 @@ app.use("/api", routes);
 
 const startServer = async () => {
   await connectDB();
-  const PORT = process.env.PORT || 4000;
+  const PORT = CONSTANTS.PORT || 4000;
   app.listen(PORT, () => logger.info(`Server running on port ${PORT}`));
 };
 

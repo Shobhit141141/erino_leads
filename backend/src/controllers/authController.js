@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const CONSTANTS = require("../config/constants");
 
 exports.register = async (req, res) => {
   try {
@@ -17,15 +18,13 @@ exports.register = async (req, res) => {
     });
     const token = jwt.sign(
       { id: user.id, email: user.email, username: user.username },
-      process.env.JWT_SECRET,
+      CONSTANTS.JWT_SECRET,
       { expiresIn: "1d" }
     );
     res.cookie("token", token, { httpOnly: true, sameSite: "strict" });
-    res
-      .status(201)
-      .json({
-        user: { id: user.id, username: user.username, email: user.email },
-      });
+    res.status(201).json({
+      user: { id: user.id, username: user.username, email: user.email },
+    });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
@@ -44,7 +43,7 @@ exports.login = async (req, res) => {
     }
     const token = jwt.sign(
       { id: user.id, email: user.email, username: user.username },
-      process.env.JWT_SECRET,
+      CONSTANTS.JWT_SECRET,
       { expiresIn: "1d" }
     );
     res.cookie("token", token, { httpOnly: true, sameSite: "strict" });
@@ -57,11 +56,9 @@ exports.login = async (req, res) => {
       }),
       { httpOnly: true, sameSite: "strict" }
     );
-    res
-      .status(200)
-      .json({
-        user: { id: user.id, username: user.username, email: user.email },
-      });
+    res.status(200).json({
+      user: { id: user.id, username: user.username, email: user.email },
+    });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }

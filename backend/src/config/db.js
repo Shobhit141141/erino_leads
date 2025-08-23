@@ -1,9 +1,10 @@
 const { Sequelize } = require("sequelize");
 const logger = require("../utils/logger");
+const CONSTANTS = require("./constants");
 
 require("dotenv").config();
 
-const sequelize = new Sequelize(process.env.DB_URL, {
+const sequelize = new Sequelize(CONSTANTS.DB_URL, {
   dialect: "postgres",
   logging: false,
 });
