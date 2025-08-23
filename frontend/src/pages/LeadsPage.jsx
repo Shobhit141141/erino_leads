@@ -38,10 +38,23 @@ const statusColorMap = {
   contacted: 'orange',
   qualified: 'green',
   lost: 'red',
-  won: 'grape'
+  won: 'cyan'
 };
 
-const myTheme = themeQuartz.withPart(colorSchemeDark);
+const myTheme = themeQuartz
+    .withParams({
+       accentColor: "#4C9FAA",
+        backgroundColor: "#1f2836",
+        browserColorScheme: "dark",
+        chromeBackgroundColor: {
+            ref: "foregroundColor",
+            mix: 0.07,
+            onto: "backgroundColor"
+        },
+        foregroundColor: "#FFF",
+        headerFontSize: 14
+    })
+    .withPart(colorSchemeDark);
 
 export default function LeadsPage() {
   const gridRef = useRef(null);
@@ -209,11 +222,11 @@ export default function LeadsPage() {
     <div>
       <Group position="apart" className="mb-4">
         <Group>
-          <Button color='cyan' onClick={handleCreate} leftSection={<FaRegSquarePlus />}>
+          <Button color='cyan' onClick={handleCreate} leftSection={<FaRegSquarePlus size={18} />}>
             Create Lead
           </Button>
           <Button variant="light" color='cyan' onClick={handleExport}>
-            <PiExportBold className='mr-2' />
+            <PiExportBold className='mr-2' size={20}/>
             Export CSV
           </Button>
 
@@ -222,12 +235,12 @@ export default function LeadsPage() {
             placeholder="Import leads JSON"
             onChange={handleImportFromJson}
             accept=".json"
-            leftSection={<BsFiletypeJson className='text-[#66d9e8]' />}
+            leftSection={<BsFiletypeJson className='text-[#66d9e8]' size={20} />}
             variant='filled'
             rightSection={
               <Tooltip
                 label={
-                  <div style={{ fontSize: 12, whiteSpace: 'pre-wrap', width : 300 }}>
+                  <div style={{ fontSize: 12, whiteSpace: 'pre-wrap', width: 300 }}>
                     {`[
   {
     "first_name": "John",
@@ -261,7 +274,7 @@ export default function LeadsPage() {
 
           {selectedRows.length > 0 && (
             <Button variant="light" color='red' onClick={handleBulkDelete}>
-              <BiSolidTrashAlt className='mr-2' />
+              <BiSolidTrashAlt className='mr-2' size={18} />
               Delete Selected ({selectedRows.length})
             </Button>
           )}

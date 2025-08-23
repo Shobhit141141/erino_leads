@@ -24,13 +24,15 @@ export default function Navbar({ user, isLoading }) {
   });
   console.log(authUser);
   const navLinks = [
-    { to: '/login', label: 'Login', show: !user, icon : <FaUserCheck className="mr-2 w-5 h-5"/> },
-    { to: '/register', label: 'Register', show: !user, icon : <FaUserPlus className="mr-2 w-5 h-5"/> },
+    { to: '/login', label: 'Login', show: !user, icon: <FaUserCheck className="mr-2 w-5 h-5" /> },
+    { to: '/register', label: 'Register', show: !user, icon: <FaUserPlus className="mr-2 w-5 h-5" /> },
   ];
 
   return (
     <nav className="w-full bg-[#181818] px-6 py-3 flex items-center justify-between shadow">
-      <Link to="/" className="text-xl font-bold text-white tracking-wide">ERINO Leads</Link>
+      <Link to="/" className="text-xl font-bold text-[#4c9faa] tracking-wide flex items-center cursive">
+      <img src="/logo.png" alt="" className="w-6 h-auto inline-block mr-2"/>
+      ERINO Leads</Link>
       <Group>
         {isLoading ? <Loader size="xs" color="cyan" /> : null}
         {navLinks.filter(l => l.show).map(link => (
@@ -40,7 +42,7 @@ export default function Navbar({ user, isLoading }) {
             to={link.to}
             variant={location.pathname === link.to ? 'filled' : 'subtle'}
             color="cyan"
-            
+
           >
             {link.icon}
             {link.label}
