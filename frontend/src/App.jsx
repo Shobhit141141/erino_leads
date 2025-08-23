@@ -6,7 +6,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import LeadsPage from './pages/LeadsPage';
 
-import { useAuthContext } from './context/AuthContext.jsx';
+import { useAuthContext } from './context/AuthContext';
 import { Navigate } from 'react-router-dom';
 import Loader from './components/Loader.jsx';
 

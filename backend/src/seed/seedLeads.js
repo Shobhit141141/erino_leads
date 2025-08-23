@@ -2,12 +2,12 @@ const { faker } = require('@faker-js/faker');
 const { sequelize } = require('../config/db');
 const Lead = require('../models/Lead');
 
-async function seedLeads(count = 60) {
+async function seedLeads(count = 120) {
   await sequelize.sync();
   const leads = [];
   for (let i = 0; i < count; i++) {
     leads.push({
-      userId: 3, 
+      userId: 4, 
       first_name: faker.person.firstName(),
       last_name: faker.person.lastName(),
       email: faker.internet.email(),

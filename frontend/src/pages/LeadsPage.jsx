@@ -9,17 +9,18 @@ import {
   Text,
   FileInput,
   Checkbox,
-  Loader
+  Loader,
+  Tooltip
 } from '@mantine/core';
 import { toast } from 'react-toastify';
 import { AllCommunityModule, ModuleRegistry, themeQuartz, colorSchemeDark } from 'ag-grid-community';
 import { IconDotsVertical, IconEdit, IconTrash, IconDownload } from '@tabler/icons-react';
 import { FaAngleLeft, FaAngleRight, FaRegSquarePlus } from "react-icons/fa6";
 import { PiExportBold } from "react-icons/pi";
-import { BiSolidTrashAlt } from "react-icons/bi";
+import { BiInfoCircle, BiSolidTrashAlt } from "react-icons/bi";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import { BsFiletypeJson } from "react-icons/bs";
-import { TbReload } from "react-icons/tb";
+// import { TbReload } from "react-icons/tb";
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -181,7 +182,7 @@ export default function LeadsPage() {
         return;
       }
 
-      await bulkCreateLeads({ leads });
+      await bulkCreateLeads(leads);
       toast.success(`${leads.length} leads imported successfully`);
       refetch();
       setFileInputKey(prev => prev + 1);
@@ -223,6 +224,39 @@ export default function LeadsPage() {
             accept=".json"
             leftSection={<BsFiletypeJson className='text-[#66d9e8]' />}
             variant='filled'
+            rightSection={
+              <Tooltip
+                label={
+                  <div style={{ fontSize: 12, whiteSpace: 'pre-wrap', width : 300 }}>
+                    {`[
+  {
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john@example.com",
+    "phone": "1234567890",
+    "company": "Acme Inc",
+    "city": "New York",
+    "state": "NY",
+    "source": "website",
+    "status": "new",
+    "score": 50,
+    "lead_value": 1000,
+    "last_activity_at": "2024-06-01",
+    "is_qualified": true
+  }
+]`}
+                  </div>
+                }
+                multiline
+                withArrow
+                position="top-end"
+                color="cyan"
+              >
+                <ActionIcon variant="subtle" color="cyan" size="sm">
+                  <BiInfoCircle size={16} />
+                </ActionIcon>
+              </Tooltip>
+            }
           />
 
           {selectedRows.length > 0 && (
@@ -369,7 +403,7 @@ export default function LeadsPage() {
           </Group>
           <TextInput label="Last Activity At" value={form.last_activity_at || ''} onChange={e => setForm(f => ({ ...f, last_activity_at: e.target.value }))} placeholder="YYYY-MM-DD" />
           <label className="flex items-center gap-2">
-            <Checkbox checked={form.is_qualified} onChange={e => setForm(f => ({ ...f, is_qualified: e.target.checked }))} color='cyan'/> Qualified
+            <Checkbox checked={form.is_qualified} onChange={e => setForm(f => ({ ...f, is_qualified: e.target.checked }))} color='cyan' /> Qualified
           </label>
           <Button type="submit" color='cyan' fullWidth>{editLead ? 'Update' : 'Create'}</Button>
         </form>

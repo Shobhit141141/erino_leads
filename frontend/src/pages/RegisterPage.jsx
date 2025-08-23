@@ -7,15 +7,17 @@ import { toast } from 'react-toastify';
 import { FaCheck, FaCircleCheck } from 'react-icons/fa6';
 import { FaTimes, FaTimesCircle } from 'react-icons/fa';
 import { useRef } from 'react';
+import { useAuthContext } from '../context/AuthContext';
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ username: '', email: '', password: '' });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-
+  const {refetch} = useAuthContext();
   const mutation = useMutation({
     mutationFn: registerUser,
     onSuccess: () => {
+       refetch();
       toast.success('Registration successful');
       navigate('/');
     },

@@ -16,7 +16,7 @@ export const createLead = async (data) => {
 };
 
 export const bulkCreateLeads = async (leads) => {
-  const res = await api.post('/lead/bulk', leads);
+  const res = await api.post('/lead/bulk', { leads });
   return res.data;
 };
 

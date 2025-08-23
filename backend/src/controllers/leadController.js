@@ -45,20 +45,39 @@ exports.createLead = async (req, res) => {
 exports.bulkCreateLeads = async (req, res) => {
   try {
     const { leads } = req.body;
-    const createdLeads = await Lead.bulkCreate(
-      leads.map((lead) => ({ ...lead, userId: req.user.id }))
-    );
-    res.status(201).json(createdLeads);
+    const userId = req.user.id;
+    
+   
+    const sanitizedLeads = leads.map(lead => {
+      const { id, userId: inputUserId, ...rest } = lead;
+      return { ...rest, userId }; 
+    });
+    
+    console.log("Sanitized Leads:", sanitizedLeads[0]);
+    
+    const createdLeads = await Lead.bulkCreate(sanitizedLeads, {
+      returning: true 
+    });
+    
+    console.log("Created Leads:", createdLeads);
+    
+    res.status(201).json({
+      message: `${createdLeads.length} leads created successfully`,
+      data: createdLeads
+    });
   } catch (err) {
-    console.log(err.message);
-    res
-      .status(400)
-      .json({ message: "Some leads already exist", error: err.message });
+    console.error(err.message);
+    res.status(400).json({ 
+      message: "Failed to create leads", 
+      error: err.message 
+    });
   }
 };
 
 exports.getLeads = async (req, res) => {
   try {
+
+    const userId = req.user.id;
     let { page = 1, limit = 20, ...filters } = req.query;
     page = parseInt(page) < 1 ? 1 : parseInt(page);
     limit = Math.min(Math.max(parseInt(limit) || 20, 1), 100);
@@ -163,7 +182,7 @@ exports.getLeads = async (req, res) => {
     }
 
     const leads = await Lead.findAndCountAll({
-      where,
+      where: { ...where, userId },
       offset: (page - 1) * limit,
       limit,
       order: [["created_at", "DESC"]],
