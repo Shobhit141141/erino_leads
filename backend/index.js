@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 const logger = require("./src/utils/logger");
 const { connectDB } = require("./src/config/db");
+const routes = require("./src/routes/index.route.js");
 require("dotenv").config();
 
 const app = express();
@@ -19,6 +20,9 @@ app.use(cors(corsOptions));
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
+app.use(morgan("dev"));
+
+app.use("/api", routes);
 
 const startServer = async () => {
   await connectDB();
