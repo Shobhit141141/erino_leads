@@ -48,3 +48,15 @@ exports.deleteUser = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
+exports.userNameAlreadyTaken = async (req, res) => {
+  try {
+    const { username } = req.body;
+    if (!username) return res.status(400).json({ message: "Username is required" });
+    const user = await User.findOne({ attributes: ["id"], where: { username } });
+    if (user) return res.status(409).json({ message: "Username already taken" });
+    res.status(200).json({ message: "Username available" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};

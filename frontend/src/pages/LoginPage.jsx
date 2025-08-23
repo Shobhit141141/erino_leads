@@ -61,31 +61,33 @@ export default function LoginPage() {
   };
 
   return (
-    <Paper className="max-w-md mx-auto mt-12 p-8" shadow="md" radius="md" withBorder>
-      <Title order={2} className="mb-6 text-center">Login</Title>
-      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-        <TextInput
-          label="Email"
-          name="email"
-          type="email"
-          value={form.email}
-          onChange={handleChange}
-          error={errors.email}
-          required
-        />
-        <TextInput
-          label="Password"
-          name="password"
-          type="password"
-          value={form.password}
-          onChange={handleChange}
-          error={errors.password}
-          required
-        />
-        <Button type="submit" fullWidth loading={mutation.isPending}>
-          Login
-        </Button>
-      </form>
-    </Paper>
+    <div style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Paper className="max-w-md w-full p-8" shadow="md" radius="md" withBorder>
+        <Title order={2} className="mb-6 text-center">Login</Title>
+        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+          <TextInput
+            label="Email"
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+            error={errors.email}
+            required
+          />
+          <TextInput
+            label="Password"
+            name="password"
+            type="password"
+            value={form.password}
+            onChange={handleChange}
+            error={errors.password}
+            required
+          />
+          <Button type="submit" fullWidth loading={mutation.isPending}>
+            Login
+          </Button>
+        </form>
+      </Paper>
+    </div>
   );
 }

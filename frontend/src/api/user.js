@@ -34,3 +34,8 @@ export const deleteUser = async (id) => {
   const res = await api.delete(`/user/${id}`);
   return res.data;
 };
+
+export const userNameAlreadyTaken = async (username) => {
+  const res = await api.post('/user/check-username', { username });
+  return res.data;
+};

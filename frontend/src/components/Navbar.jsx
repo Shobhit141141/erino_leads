@@ -2,6 +2,7 @@
 import { AiFillHome } from "react-icons/ai";
 import { FaPowerOff } from "react-icons/fa6";
 import { FaUserCheck } from "react-icons/fa";
+import { FaUserPlus } from "react-icons/fa6";
 
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Group, Button, Loader, Avatar } from '@mantine/core';
@@ -23,8 +24,8 @@ export default function Navbar({ user, isLoading }) {
   });
   console.log(authUser);
   const navLinks = [
-    { to: '/login', label: 'Login', show: !user, icon : <AiFillHome className="mr-2"/> },
-    { to: '/register', label: 'Register', show: !user, icon : <AiFillHome className="mr-2"/> },
+    { to: '/login', label: 'Login', show: !user, icon : <FaUserCheck className="mr-2 w-5 h-5"/> },
+    { to: '/register', label: 'Register', show: !user, icon : <FaUserPlus className="mr-2 w-5 h-5"/> },
   ];
 
   return (
