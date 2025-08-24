@@ -7,6 +7,12 @@ require("dotenv").config();
 const sequelize = new Sequelize(CONSTANTS.DB_URL, {
   dialect: "postgres",
   logging: false,
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
 });
 
 const connectDB = async () => {
