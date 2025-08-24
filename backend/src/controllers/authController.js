@@ -21,7 +21,13 @@ exports.register = async (req, res) => {
       CONSTANTS.JWT_SECRET,
       { expiresIn: "1d" }
     );
-    res.cookie("token", token, { httpOnly: true, sameSite: "lax" });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      domain: ".vercel.app",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
     res.cookie(
       "user",
       JSON.stringify({
@@ -29,7 +35,13 @@ exports.register = async (req, res) => {
         username: user.username,
         email: user.email,
       }),
-      { httpOnly: true, path: "/", sameSite: "lax" }
+      {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        domain: ".vercel.app",
+        maxAge: 24 * 60 * 60 * 1000,
+      }
     );
     res.status(201).json({
       user: { id: user.id, username: user.username, email: user.email },
@@ -55,7 +67,13 @@ exports.login = async (req, res) => {
       CONSTANTS.JWT_SECRET,
       { expiresIn: "1d" }
     );
-    res.cookie("token", token, { httpOnly: true, sameSite: "lax" });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      domain: ".vercel.app",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
     res.cookie(
       "user",
       JSON.stringify({
@@ -63,7 +81,13 @@ exports.login = async (req, res) => {
         username: user.username,
         email: user.email,
       }),
-      { httpOnly: true, sameSite: "lax" }
+      {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        domain: ".vercel.app",
+        maxAge: 24 * 60 * 60 * 1000,
+      }
     );
     res.status(200).json({
       user: { id: user.id, username: user.username, email: user.email },
