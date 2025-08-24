@@ -203,7 +203,8 @@ exports.getLeads = async (req, res) => {
 
 exports.getLeadById = async (req, res) => {
   try {
-    const lead = await Lead.findByPk(req.params.id);
+    const userId = req.user.id;
+    const lead = await Lead.findOne({ where: { id: req.params.id, userId } });
     if (!lead) return res.status(404).json({ message: "Lead not found" });
     res.json(lead);
   } catch (err) {
@@ -215,7 +216,8 @@ exports.getLeadById = async (req, res) => {
 
 exports.updateLead = async (req, res) => {
   try {
-    const lead = await Lead.findByPk(req.params.id);
+    const userId = req.user.id;
+    const lead = await Lead.findOne({ where: { id: req.params.id, userId } });
     if (!lead) return res.status(404).json({ message: "Lead not found" });
     await lead.update(req.body);
     res.json(lead);
@@ -228,7 +230,8 @@ exports.updateLead = async (req, res) => {
 
 exports.deleteLead = async (req, res) => {
   try {
-    const lead = await Lead.findByPk(req.params.id);
+    const userId = req.user.id;
+    const lead = await Lead.findOne({ where: { id: req.params.id, userId } });
     if (!lead) return res.status(404).json({ message: "Lead not found" });
     await lead.destroy();
     res.json({ message: "Lead deleted" });
@@ -241,11 +244,12 @@ exports.deleteLead = async (req, res) => {
 
 exports.bulkDelete = async (req, res) => {
   try {
+    const userId = req.user.id;
     const ids = req.body.ids;
     if (!Array.isArray(ids) || ids.length === 0) {
       return res.status(400).json({ message: "Invalid request" });
     }
-    await Lead.destroy({ where: { id: ids } });
+    await Lead.destroy({ where: { id: ids, userId } });
     res.json({ message: "Leads deleted" });
   } catch (err) {
     res
