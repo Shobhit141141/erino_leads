@@ -21,7 +21,16 @@ exports.register = async (req, res) => {
       CONSTANTS.JWT_SECRET,
       { expiresIn: "1d" }
     );
-    res.cookie("token", token, { httpOnly: true, sameSite: "strict" });
+    res.cookie("token", token, { httpOnly: true, sameSite: "none" });
+    res.cookie(
+      "user",
+      JSON.stringify({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      }),
+      { httpOnly: true, sameSite: "none" }
+    );
     res.status(201).json({
       user: { id: user.id, username: user.username, email: user.email },
     });
@@ -46,7 +55,7 @@ exports.login = async (req, res) => {
       CONSTANTS.JWT_SECRET,
       { expiresIn: "1d" }
     );
-    res.cookie("token", token, { httpOnly: true, sameSite: "strict" });
+    res.cookie("token", token, { httpOnly: true, sameSite: "none" });
     res.cookie(
       "user",
       JSON.stringify({
@@ -54,7 +63,7 @@ exports.login = async (req, res) => {
         username: user.username,
         email: user.email,
       }),
-      { httpOnly: true, sameSite: "strict" }
+      { httpOnly: true, sameSite: "none" }
     );
     res.status(200).json({
       user: { id: user.id, username: user.username, email: user.email },
