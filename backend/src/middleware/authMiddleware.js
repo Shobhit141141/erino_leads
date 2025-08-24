@@ -4,7 +4,7 @@ const CONSTANTS = require("../config/constants");
 
 module.exports = (req, res, next) => {
   const token = req.cookies.token;
-  logger.debug(req.cookies);
+  logger.info(req.cookies);
   if (!token) {
     return res.status(401).json({ message: "No token, authorization denied" });
   }
