@@ -16,7 +16,6 @@ const corsOptions = {
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-
 };
 app.use(cors(corsOptions));
 app.use(helmet());
@@ -24,6 +23,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
 
+app.get("/", (_, res) => {
+  res.send("Welcome to the API");
+});
 app.use("/api", routes);
 
 const startServer = async () => {

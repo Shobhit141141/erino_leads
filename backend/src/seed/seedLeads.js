@@ -24,7 +24,6 @@ async function seedLeads(count = 120) {
     });
   }
   await Lead.bulkCreate(leads);
-  console.log(`${count} leads seeded!`);
   process.exit(0);
 }
 

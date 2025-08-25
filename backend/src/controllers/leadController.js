@@ -52,15 +52,11 @@ exports.bulkCreateLeads = async (req, res) => {
       const { id, userId: inputUserId, ...rest } = lead;
       return { ...rest, userId }; 
     });
-    
-    console.log("Sanitized Leads:", sanitizedLeads[0]);
-    
+        
     const createdLeads = await Lead.bulkCreate(sanitizedLeads, {
       returning: true 
     });
-    
-    console.log("Created Leads:", createdLeads);
-    
+        
     res.status(201).json({
       message: `${createdLeads.length} leads created successfully`,
       data: createdLeads

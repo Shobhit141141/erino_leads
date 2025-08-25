@@ -24,9 +24,9 @@ exports.register = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       path: "/",
-      secure: true,
-      sameSite: "none",
-      domain: ".shobhittiwari.me",
+      secure: CONSTANTS.NODE_ENV === "dev" ? false : true,
+      sameSite: CONSTANTS.NODE_ENV === "dev" ? "lax" : "none",
+      domain: CONSTANTS.NODE_ENV === "dev" ? "" : ".shobhittiwari.me",
     });
     res.cookie(
       "user",
@@ -38,9 +38,9 @@ exports.register = async (req, res) => {
       {
         httpOnly: true,
         path: "/",
-        secure: true,
-        sameSite: "none",
-        domain: ".shobhittiwari.me",
+        secure: CONSTANTS.NODE_ENV === "dev" ? false : true,
+        sameSite: CONSTANTS.NODE_ENV === "dev" ? "lax" : "none",
+        domain: CONSTANTS.NODE_ENV === "dev" ? "" : ".shobhittiwari.me",
       }
     );
     res.status(201).json({
@@ -70,9 +70,9 @@ exports.login = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       path: "/",
-      secure: true,
-      sameSite: "none",
-      domain: ".shobhittiwari.me",
+      secure: CONSTANTS.NODE_ENV === "dev" ? false : true,
+      sameSite: CONSTANTS.NODE_ENV === "dev" ? "lax" : "none",
+      domain: CONSTANTS.NODE_ENV === "dev" ? "" : ".shobhittiwari.me",
     });
     res.cookie(
       "user",
@@ -84,9 +84,9 @@ exports.login = async (req, res) => {
       {
         httpOnly: true,
         path: "/",
-        secure: true,
-        sameSite: "none",
-        domain: ".shobhittiwari.me",
+        secure: CONSTANTS.NODE_ENV === "dev" ? false : true,
+        sameSite: CONSTANTS.NODE_ENV === "dev" ? "lax" : "none",
+        domain: CONSTANTS.NODE_ENV === "dev" ? "" : ".shobhittiwari.me",
       }
     );
     res.status(200).json({
