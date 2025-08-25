@@ -132,7 +132,19 @@ exports.login = async (req, res) => {
  * @returns {200} - Returns success message after clearing cookies
  */
 exports.logout = (req, res) => {
-  res.clearCookie("token");
-  res.clearCookie("user");
+  res.clearCookie("token",{
+    httpOnly: true,
+    path: "/",
+    secure: CONSTANTS.NODE_ENV === "dev" ? false : true,
+    sameSite: CONSTANTS.NODE_ENV === "dev" ? "lax" : "none",
+    domain: CONSTANTS.NODE_ENV === "dev" ? "" : ".shobhittiwari.me",
+  });
+  res.clearCookie("user",{
+    httpOnly: true,
+    path: "/",
+    secure: CONSTANTS.NODE_ENV === "dev" ? false : true,
+    sameSite: CONSTANTS.NODE_ENV === "dev" ? "lax" : "none",
+    domain: CONSTANTS.NODE_ENV === "dev" ? "" : ".shobhittiwari.me",
+  });
   res.status(200).json({ message: "Logged out successfully" });
 };
