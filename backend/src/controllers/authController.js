@@ -23,10 +23,10 @@ exports.register = async (req, res) => {
     );
     res.cookie("token", token, {
       httpOnly: true,
+      path: "/",
       secure: true,
       sameSite: "none",
-      domain: ".vercel.app",
-      maxAge: 24 * 60 * 60 * 1000,
+      domain: ".shobhittiwari.me",
     });
     res.cookie(
       "user",
@@ -37,10 +37,10 @@ exports.register = async (req, res) => {
       }),
       {
         httpOnly: true,
+        path: "/",
         secure: true,
         sameSite: "none",
-        domain: ".vercel.app",
-        maxAge: 24 * 60 * 60 * 1000,
+        domain: ".shobhittiwari.me",
       }
     );
     res.status(201).json({
@@ -69,10 +69,10 @@ exports.login = async (req, res) => {
     );
     res.cookie("token", token, {
       httpOnly: true,
+      path: "/",
       secure: true,
       sameSite: "none",
-      domain: ".vercel.app",
-      maxAge: 24 * 60 * 60 * 1000,
+      domain: ".shobhittiwari.me",
     });
     res.cookie(
       "user",
@@ -83,10 +83,10 @@ exports.login = async (req, res) => {
       }),
       {
         httpOnly: true,
+        path: "/",
         secure: true,
         sameSite: "none",
-        domain: ".vercel.app",
-        maxAge: 24 * 60 * 60 * 1000,
+        domain: ".shobhittiwari.me",
       }
     );
     res.status(200).json({
