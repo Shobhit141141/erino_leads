@@ -1,4 +1,5 @@
-# Erino Leads — Full Stack App
+# <img src="./frontend/public/logo.png" alt="Logo" width="30" height="30" style="vertical-align: middle;" /> Erino Leads — Full Stack App
+
 
 Erino Leads is a modern full-stack leads management system built with React, Vite, Mantine, Tailwind CSS, AG Grid, Node.js, Express, and Sequelize (PostgreSQL). It features robust authentication, advanced lead management, and a beautiful UI.
 
@@ -7,7 +8,31 @@ Erino Leads is a modern full-stack leads management system built with React, Vit
 ## Table of Contents
 
 - [Backend](#backend)
+  - [Features](#features)
+  - [Tech Stack](#tech-stack)
+  - [Getting Started](#getting-started)
+    - [1. Install dependencies](#1-install-dependencies)
+    - [2. Configure Environment](#2-configure-environment)
+    - [3. Database Setup](#3-database-setup)
+    - [4. Run the Server](#4-run-the-server)
+    - [5. Seed Demo Data (Optional)](#5-seed-demo-data-optional)
+  - [API Endpoints](#api-endpoints)
+  - [Scripts](#scripts)
+  - [License](#license)
+
 - [Frontend](#frontend)
+  - [Features](#features-1)
+  - [Tech Stack](#tech-stack-1)
+  - [Getting Started](#getting-started-1)
+    - [1. Install dependencies](#1-install-dependencies-1)
+    - [2. Configure Environment](#2-configure-environment-1)
+    - [3. Run the App](#3-run-the-app)
+  - [Scripts](#scripts-1)
+  - [Project Structure](#project-structure)
+  - [Authentication](#authentication)
+  - [Leads Table](#leads-table)
+  - [License](#license-1)
+
 
 ---
 
@@ -18,7 +43,6 @@ This is the backend API for the Erino Leads Management System, built with Node.j
 ### Features
 
 - User authentication (JWT, cookies)
-- User CRUD (admin only)
 - Leads CRUD (with advanced filtering, pagination, and user association)
 - Centralized routing, CORS, and 404 handling
 - Model-level validation
@@ -108,11 +132,16 @@ This is the frontend for the Erino Leads Management System, built with React, Vi
 ### Features
 
 - User authentication (JWT via cookies, context-based)
+- Bulk delete and CSV export
+- Import json file for bulk creation of leads
+- Filters
+  - Search by name, email, company
+  - Filter by status, source, and qualified status
+  - Date range filters for created and last activity dates
 - Protected and public routes
 - User registration and login
-- Leads table with server-side filtering, sorting, and pagination (AG Grid)
+- Leads table with server-side filtering, sorting, and pagination
 - Create, edit, and delete leads (modal forms)
-- Bulk delete and CSV export
 - Responsive, modern UI (Mantine, Tailwind)
 - Toast notifications for feedback
 
