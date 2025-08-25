@@ -31,35 +31,9 @@ export const logoutUser = async () => {
   return await res.json();
 };
 
-export const fetchUsers = async () => {
-  const res = await fetch(`${API_URL}/user`, { credentials: 'include' });
-  if (!res.ok) throw new Error('Failed to fetch users');
-  return await res.json();
-};
-
 export const fetchUserById = async (id) => {
   const res = await fetch(`${API_URL}/user/${id}`, { credentials: 'include' });
   if (!res.ok) throw new Error('Failed to fetch user');
-  return await res.json();
-};
-
-export const updateUser = async ({ id, ...data }) => {
-  const res = await fetch(`${API_URL}/user/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) throw new Error('Failed to update user');
-  return await res.json();
-};
-
-export const deleteUser = async (id) => {
-  const res = await fetch(`${API_URL}/user/${id}`, {
-    method: 'DELETE',
-    credentials: 'include',
-  });
-  if (!res.ok) throw new Error('Failed to delete user');
   return await res.json();
 };
 
