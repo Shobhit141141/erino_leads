@@ -5,7 +5,8 @@ import { Button, TextInput, Paper, Title } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuthContext } from '../context/AuthContext';
-
+import {Helmet} from 'react-helmet-async';
+import SEO from './SEO';
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function LoginPage() {
@@ -22,7 +23,6 @@ export default function LoginPage() {
       navigate('/');
     },
     onError: (err) => {
-      console.log(err);
       toast.error(err?.response?.data?.message || 'Login failed');
     },
   });
@@ -62,6 +62,7 @@ export default function LoginPage() {
 
   return (
     <div style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <SEO title="Login Page" description="Login to your account" />
       <Paper className="max-w-md w-full p-8" shadow="md" radius="md" withBorder>
         <Title order={2} className="mb-6 text-center">Login</Title>
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>

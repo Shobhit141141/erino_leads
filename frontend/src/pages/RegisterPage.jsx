@@ -8,6 +8,7 @@ import { FaCheck, FaCircleCheck } from 'react-icons/fa6';
 import { FaTimes, FaTimesCircle } from 'react-icons/fa';
 import { useRef } from 'react';
 import { useAuthContext } from '../context/AuthContext';
+import SEO from './SEO';
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ username: '', email: '', password: '' });
@@ -124,6 +125,7 @@ export default function RegisterPage() {
 
   return (
     <div style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <SEO title="Register Page" description="Create a new account" />
       <Paper className="max-w-md w-full mx-auto mt-12 p-8" shadow="md" radius="md" withBorder>
         <Title order={2} className="mb-6 text-center">Register</Title>
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>

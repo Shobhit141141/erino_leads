@@ -22,7 +22,6 @@ export default function Navbar({ user, isLoading }) {
       navigate('/login');
     },
   });
-  console.log(authUser);
   const navLinks = [
     { to: '/login', label: 'Login', show: !user, icon: <FaUserCheck className="mr-2 w-5 h-5" /> },
     { to: '/register', label: 'Register', show: !user, icon: <FaUserPlus className="mr-2 w-5 h-5" /> },

@@ -9,6 +9,7 @@ import LeadsPage from './pages/LeadsPage';
 import { useAuthContext } from './context/AuthContext';
 import { Navigate } from 'react-router-dom';
 import Loader from './components/Loader.jsx';
+import SEO from './pages/SEO.jsx';
 
 function ProtectedRoute({ children }) {
   const { isLoading, isAuthenticated } = useAuthContext();
@@ -29,6 +30,7 @@ function App() {
   return (
     <>
       <Navbar user={user} isLoading={isLoading} />
+      <SEO title="Home" description="Manage your leads effectively" />
       <Container size="xl" className="py-8">
         <Routes>
           <Route path="/" element={

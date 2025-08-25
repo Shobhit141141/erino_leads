@@ -20,6 +20,7 @@ import { PiExportBold } from "react-icons/pi";
 import { BiInfoCircle, BiSolidTrashAlt } from "react-icons/bi";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import { BsFiletypeJson } from "react-icons/bs";
+import SEO from './SEO';
 // import { TbReload } from "react-icons/tb";
 
 
@@ -220,6 +221,7 @@ export default function LeadsPage() {
 
   return (
     <div>
+      <SEO title="Leads Page" description="Manage your leads effectively" />
       <Group position="apart" className="mb-4">
         <Group>
           <Button color='cyan' onClick={handleCreate} leftSection={<FaRegSquarePlus size={18} />}>
