@@ -3,6 +3,20 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const CONSTANTS = require("../config/constants");
 
+/**
+ * @description Register a new user, hash their password, store in database, and return JWT in cookie.
+ * @route POST /auth/register
+ * @access Public
+ *
+ * @param {Object} req.body
+ * @param {string} req.body.username - Username for the new user
+ * @param {string} req.body.email - Email for the new user (must be unique)
+ * @param {string} req.body.password - Plain text password (will be hashed before storing)
+ *
+ * @returns {201} - Returns created user object (id, username, email) and sets JWT/user cookies
+ * @returns {400} - If user with the given email already exists
+ * @returns {500} - If a server error occurs
+ */
 exports.register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -51,6 +65,19 @@ exports.register = async (req, res) => {
   }
 };
 
+/**
+ * @description Authenticate user with email and password, return JWT in cookie.
+ * @route POST /auth/login
+ * @access Public
+ *
+ * @param {Object} req.body
+ * @param {string} req.body.email - User's registered email
+ * @param {string} req.body.password - Plain text password to verify
+ *
+ * @returns {200} - Returns authenticated user object (id, username, email) and sets JWT/user cookies
+ * @returns {400} - If user is not found or password is incorrect
+ * @returns {500} - If a server error occurs
+ */
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -97,6 +124,13 @@ exports.login = async (req, res) => {
   }
 };
 
+/**
+ * @description Log out the authenticated user by clearing auth cookies.
+ * @route POST /auth/logout
+ * @access Private
+ *
+ * @returns {200} - Returns success message after clearing cookies
+ */
 exports.logout = (req, res) => {
   res.clearCookie("token");
   res.clearCookie("user");

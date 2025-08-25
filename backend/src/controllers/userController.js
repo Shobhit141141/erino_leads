@@ -1,14 +1,17 @@
 const User = require("../models/User");
 
-exports.getAllUsers = async (req, res) => {
-  try {
-    const users = await User.findAll({ attributes: { exclude: ["password"] } });
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-};
-
+/**
+ * @description Fetch a single user by ID.
+ * @route GET /users/:id
+ * @access Private (Admin or same user)
+ *
+ * @param {Object} req.params
+ * @param {string} req.params.id - The ID of the user to fetch
+ *
+ * @returns {200} - Returns user object (id, username, email, etc.)
+ * @returns {404} - If user is not found
+ * @returns {500} - If a server error occurs
+ */
 exports.getUserById = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id, {
@@ -21,34 +24,19 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-exports.updateUser = async (req, res) => {
-  try {
-    const { username, email } = req.body;
-    const user = await User.findByPk(req.params.id);
-    if (!user) return res.status(404).json({ message: "User not found" });
-    user.username = username || user.username;
-    user.email = email || user.email;
-    await user.save();
-    res.json({
-      message: "User updated",
-      user: { id: user.id, username: user.username, email: user.email },
-    });
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-};
-
-exports.deleteUser = async (req, res) => {
-  try {
-    const user = await User.findByPk(req.params.id);
-    if (!user) return res.status(404).json({ message: "User not found" });
-    await user.destroy();
-    res.json({ message: "User deleted" });
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-};
-
+/**
+ * @description Check if a username is already taken.
+ * @route POST /users/check-username
+ * @access Public
+ *
+ * @param {Object} req.body
+ * @param {string} req.body.username - The username to check for availability
+ *
+ * @returns {200} - If username is available
+ * @returns {400} - If username is not provided
+ * @returns {409} - If username is already taken
+ * @returns {500} - If a server error occurs
+ */
 exports.userNameAlreadyTaken = async (req, res) => {
   try {
     const { username } = req.body;

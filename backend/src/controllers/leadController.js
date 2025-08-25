@@ -1,6 +1,30 @@
 const Lead = require("../models/Lead");
 const { Op } = require("sequelize");
 
+/**
+ * @description Create a new lead for the authenticated user.
+ * @route POST /leads
+ * @access Private
+ *
+ * @param {Object} req.body
+ * @param {string} req.body.first_name - First name of the lead
+ * @param {string} req.body.last_name - Last name of the lead
+ * @param {string} req.body.email - Email of the lead
+ * @param {string} req.body.phone - Phone number of the lead
+ * @param {string} req.body.company - Company name of the lead
+ * @param {string} req.body.city - City of the lead
+ * @param {string} req.body.state - State of the lead
+ * @param {string} req.body.source - Source of the lead (e.g., website, referral)
+ * @param {string} req.body.status - Status of the lead (e.g., new, contacted)
+ * @param {number} req.body.score - Lead score
+ * @param {number} req.body.lead_value - Potential deal value
+ * @param {Date} req.body.last_activity_at - Timestamp of last activity
+ * @param {boolean} req.body.is_qualified - Whether the lead is qualified
+ *
+ * @returns {201} - Returns the created lead object in JSON format
+ * @returns {400} - If validation fails or creation error occurs
+ */
+
 exports.createLead = async (req, res) => {
   try {
     const {
@@ -42,37 +66,74 @@ exports.createLead = async (req, res) => {
   }
 };
 
+/**
+ * @description Bulk create multiple leads for the authenticated user.
+ * @route POST /leads/bulk
+ * @access Private
+ *
+ * @param {Object} req.body
+ * @param {Array<Object>} req.body.leads - Array of lead objects to create
+ *
+ * @returns {201} - Returns a success message and the created leads
+ * @returns {400} - If validation fails or creation error occurs
+ */
 exports.bulkCreateLeads = async (req, res) => {
   try {
     const { leads } = req.body;
     const userId = req.user.id;
-    
-   
-    const sanitizedLeads = leads.map(lead => {
+
+    const sanitizedLeads = leads.map((lead) => {
       const { id, userId: inputUserId, ...rest } = lead;
-      return { ...rest, userId }; 
+      return { ...rest, userId };
     });
-        
+
     const createdLeads = await Lead.bulkCreate(sanitizedLeads, {
-      returning: true 
+      returning: true,
     });
-        
+
     res.status(201).json({
       message: `${createdLeads.length} leads created successfully`,
-      data: createdLeads
+      data: createdLeads,
     });
   } catch (err) {
     console.error(err.message);
-    res.status(400).json({ 
-      message: "Failed to create leads", 
-      error: err.message 
+    res.status(400).json({
+      message: "Failed to create leads",
+      error: err.message,
     });
   }
 };
 
+/**
+ * @description Get paginated, filtered, and sorted list of leads for the authenticated user.
+ * @route GET /leads
+ * @access Private
+ *
+ * @param {Object} req.query
+ * @param {number} [req.query.page=1] - Page number
+ * @param {number} [req.query.limit=20] - Number of items per page
+ * @param {string} [req.query.email] - Exact email filter
+ * @param {string} [req.query.company] - Exact company filter
+ * @param {string} [req.query.city] - Exact city filter
+ * @param {string[]} [req.query.status] - Filter by status
+ * @param {string[]} [req.query.source] - Filter by source
+ * @param {number} [req.query.score_gt] - Score greater than
+ * @param {number} [req.query.score_lt] - Score less than
+ * @param {number[]} [req.query.score_between] - Score between [min,max]
+ * @param {number} [req.query.lead_value_gt] - Lead value greater than
+ * @param {number} [req.query.lead_value_lt] - Lead value less than
+ * @param {number[]} [req.query.lead_value_between] - Lead value between [min,max]
+ * @param {Date} [req.query.created_at_after] - Created after date
+ * @param {Date} [req.query.created_at_before] - Created before date
+ * @param {Date[]} [req.query.created_at_between] - Created between [start,end]
+ * @param {boolean} [req.query.is_qualified] - Filter by qualification
+ * @param {string} [req.query.q] - Search term for name, email, company
+ *
+ * @returns {200} - Paginated leads with metadata (total, page, totalPages)
+ * @returns {500} - If a server error occurs while fetching
+ */
 exports.getLeads = async (req, res) => {
   try {
-
     const userId = req.user.id;
     let { page = 1, limit = 20, ...filters } = req.query;
     page = parseInt(page) < 1 ? 1 : parseInt(page);
@@ -197,6 +258,19 @@ exports.getLeads = async (req, res) => {
   }
 };
 
+/**
+ * @description Get a single lead by ID for the authenticated user.
+ * @route GET /leads/:id
+ * @access Private
+ *
+ * @param {Object} req.params
+ * @param {string} req.params.id - Lead ID
+ *
+ * @returns {200} - Returns the lead object
+ * @returns {404} - If the lead is not found
+ * @returns {500} - If a server error occurs
+ */
+
 exports.getLeadById = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -210,6 +284,20 @@ exports.getLeadById = async (req, res) => {
   }
 };
 
+/**
+ * @description Update a lead by ID for the authenticated user.
+ * @route PUT /leads/:id
+ * @access Private
+ *
+ * @param {Object} req.params
+ * @param {string} req.params.id - Lead ID
+ *
+ * @param {Object} req.body - Fields to update (any lead field)
+ *
+ * @returns {200} - Returns the updated lead object
+ * @returns {404} - If the lead is not found
+ * @returns {400} - If validation fails or update error occurs
+ */
 exports.updateLead = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -224,6 +312,18 @@ exports.updateLead = async (req, res) => {
   }
 };
 
+/**
+ * @description Delete a lead by ID for the authenticated user.
+ * @route DELETE /leads/:id
+ * @access Private
+ *
+ * @param {Object} req.params
+ * @param {string} req.params.id - Lead ID
+ *
+ * @returns {200} - Returns a success message on deletion
+ * @returns {404} - If the lead is not found
+ * @returns {500} - If a server error occurs during deletion
+ */
 exports.deleteLead = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -237,7 +337,18 @@ exports.deleteLead = async (req, res) => {
       .json({ message: "Error deleting lead", error: err.message });
   }
 };
-
+/**
+ * @description Bulk delete leads by IDs for the authenticated user.
+ * @route DELETE /leads/bulk
+ * @access Private
+ *
+ * @param {Object} req.body
+ * @param {Array<string>} req.body.ids - Array of lead IDs to delete
+ *
+ * @returns {200} - Returns a success message on deletion
+ * @returns {400} - If request body is invalid or no IDs provided
+ * @returns {500} - If a server error occurs during deletion
+ */
 exports.bulkDelete = async (req, res) => {
   try {
     const userId = req.user.id;

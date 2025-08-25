@@ -2,6 +2,14 @@ const { faker } = require('@faker-js/faker');
 const { sequelize } = require('../config/db');
 const Lead = require('../models/Lead');
 
+/**
+ * @desc  Seed the database with fake leads for testing or development.
+ *
+ * @async
+ * @function seedLeads
+ * @param {number} [count=120] - Number of leads to generate (default is 120).
+ * @returns {Promise<void>} Resolves when leads are inserted into the database.
+ */
 async function seedLeads(count = 120) {
   await sequelize.sync();
   const leads = [];
