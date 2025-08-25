@@ -7,7 +7,7 @@ async function seedLeads(count = 120) {
   const leads = [];
   for (let i = 0; i < count; i++) {
     leads.push({
-      userId: 4, 
+      userId: 2, 
       first_name: faker.person.firstName(),
       last_name: faker.person.lastName(),
       email: faker.internet.email(),
@@ -24,6 +24,7 @@ async function seedLeads(count = 120) {
     });
   }
   await Lead.bulkCreate(leads);
+  console.log(`${count} leads have been seeded.`);
   process.exit(0);
 }
 

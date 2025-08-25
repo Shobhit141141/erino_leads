@@ -21,8 +21,9 @@ import { BiInfoCircle, BiSolidTrashAlt } from "react-icons/bi";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import { BsFiletypeJson } from "react-icons/bs";
 import SEO from './SEO';
-// import { TbReload } from "react-icons/tb";
-
+import { DateInput } from '@mantine/dates';
+import { IconFilter, IconFilterOff } from '@tabler/icons-react';
+import { FilterStrip } from './FilterStrip';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -43,41 +44,95 @@ const statusColorMap = {
 };
 
 const myTheme = themeQuartz
-    .withParams({
-       accentColor: "#4C9FAA",
-        backgroundColor: "#1f2836",
-        browserColorScheme: "dark",
-        chromeBackgroundColor: {
-            ref: "foregroundColor",
-            mix: 0.07,
-            onto: "backgroundColor"
-        },
-        foregroundColor: "#FFF",
-        headerFontSize: 14
-    })
-    .withPart(colorSchemeDark);
+  .withParams({
+    accentColor: "#4C9FAA",
+    backgroundColor: "#1f2836",
+    browserColorScheme: "dark",
+    chromeBackgroundColor: {
+      ref: "foregroundColor",
+      mix: 0.07,
+      onto: "backgroundColor"
+    },
+    foregroundColor: "#FFF",
+    headerFontSize: 14
+  })
+  .withPart(colorSchemeDark);
 
 export default function LeadsPage() {
   const gridRef = useRef(null);
-  const [quickFilter, setQuickFilter] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editLead, setEditLead] = useState(null);
   const [selectedRows, setSelectedRows] = useState([]);
   const [pagination, setPagination] = useState({ page: 1, pageSize: 20 });
   const [fileInputKey, setFileInputKey] = useState(0);
-  const fileInputRef = useRef(null);
+  const [filters, setFilters] = useState({
+    q: '',
+    status: '',
+    source: '',
+    city: '',
+    company: '',
+    email: '',
+    is_qualified: '',
+    score_gt: '',
+    score_lt: '',
+    lead_value_gt: '',
+    lead_value_lt: '',
+    created_at_after: null,
+    created_at_before: null,
+    last_activity_at_after: null,
+    last_activity_at_before: null
+  });
+  const [appliedFilters, setAppliedFilters] = useState({});
+  const [showFilters, setShowFilters] = useState(false);
 
   const { data, refetch, isLoading } = useQuery({
-    queryKey: ['leads', pagination],
+    queryKey: ['leads', pagination, appliedFilters],
     queryFn: async () => {
+      const cleanFilters = Object.fromEntries(
+        Object.entries(appliedFilters).filter(([_, v]) => v !== '' && v !== null)
+      );
       const res = await fetchLeads({
         page: pagination.page,
-        limit: pagination.pageSize
+        limit: pagination.pageSize,
+        ...cleanFilters
       });
       return res;
     },
     keepPreviousData: true,
   });
+
+  const handleFilterChange = useCallback((field, value) => {
+    setFilters(prev => ({ ...prev, [field]: value }));
+  }, [setFilters]);
+
+
+  const applyFilters = useCallback(() => {
+    setAppliedFilters({ ...filters });
+    setPagination(prev => ({ ...prev, page: 1 }));
+  }, [filters]);
+
+
+  const clearFilters = useCallback(() => {
+    setFilters({
+      q: '',
+      status: '',
+      source: '',
+      city: '',
+      company: '',
+      email: '',
+      is_qualified: '',
+      score_gt: '',
+      score_lt: '',
+      lead_value_gt: '',
+      lead_value_lt: '',
+      created_at_after: null,
+      created_at_before: null,
+      last_activity_at_after: null,
+      last_activity_at_before: null
+    });
+    setAppliedFilters({});
+    setPagination(prev => ({ ...prev, page: 1 }));
+  }, []);
 
   const handleDelete = async (id) => {
     try {
@@ -219,16 +274,18 @@ export default function LeadsPage() {
   const startRecord = data ? (pagination.page - 1) * pagination.pageSize + 1 : 0;
   const endRecord = data ? Math.min(pagination.page * pagination.pageSize, data.total) : 0;
 
+
+
   return (
     <div>
       <SEO title="Leads Page" description="Manage your leads effectively" />
-      <Group position="apart" className="mb-4">
+      <Group position="apart" className="mb-2">
         <Group>
           <Button color='cyan' onClick={handleCreate} leftSection={<FaRegSquarePlus size={18} />}>
             Create Lead
           </Button>
           <Button variant="light" color='cyan' onClick={handleExport}>
-            <PiExportBold className='mr-2' size={20}/>
+            <PiExportBold className='mr-2' size={20} />
             Export CSV
           </Button>
 
@@ -288,6 +345,20 @@ export default function LeadsPage() {
       </Group>
 
       <div style={{ width: '100%', height: '600px' }}>
+
+        <FilterStrip
+          showFilters={showFilters}
+          setShowFilters={setShowFilters}
+          filterProps={{
+            filters,
+            handleFilterChange,
+            clearFilters,
+            applyFilters,
+            statusOptions,
+            sourceOptions
+          }}
+        />
+
         <AgGridReact
           ref={gridRef}
           rowData={data?.data || []}
@@ -306,6 +377,8 @@ export default function LeadsPage() {
             setSelectedRows(rows);
           }}
         />
+
+
 
         <div
 

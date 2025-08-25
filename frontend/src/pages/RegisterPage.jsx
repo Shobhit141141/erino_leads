@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { registerUser, userNameAlreadyTaken } from '../api/user';
-import { Button, TextInput, Paper, Title, Progress, Box, Text, ThemeIcon, List, Loader } from '@mantine/core';
+import { Button, TextInput, Paper, Title, Progress, Box, Text, ThemeIcon, List, Loader, ActionIcon } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaCheck, FaCircleCheck } from 'react-icons/fa6';
@@ -9,16 +9,18 @@ import { FaTimes, FaTimesCircle } from 'react-icons/fa';
 import { useRef } from 'react';
 import { useAuthContext } from '../context/AuthContext';
 import SEO from './SEO';
+import { LuEye, LuEyeClosed } from "react-icons/lu";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ username: '', email: '', password: '' });
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const {refetch} = useAuthContext();
+  const { refetch } = useAuthContext();
   const mutation = useMutation({
     mutationFn: registerUser,
     onSuccess: () => {
-       refetch();
+      refetch();
       toast.success('Registration successful');
       navigate('/');
     },
@@ -108,7 +110,7 @@ export default function RegisterPage() {
           }
         }
       }, 500);
-    } else if (name === 'password'){
+    } else if (name === 'password') {
       if (/\s/.test(value)) {
         setErrors(prev => ({ ...prev, password: 'Password cannot contain spaces' }));
         setForm(prev => ({ ...prev, password: value.replace(/\s/g, '') }));
@@ -150,11 +152,14 @@ export default function RegisterPage() {
           <TextInput
             label="Password"
             name="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={form.password}
             onChange={handleChange}
             error={errors.password}
             required
+            rightSection={<div onClick={() => setShowPassword(prev => !prev)} style={{ cursor: 'pointer' }}>
+              {showPassword ? <LuEyeClosed size={18} /> : <LuEye size={18} />}
+            </div>}
           />
 
           {form.password && (

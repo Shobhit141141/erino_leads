@@ -5,16 +5,16 @@ import { Button, TextInput, Paper, Title } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuthContext } from '../context/AuthContext';
-import {Helmet} from 'react-helmet-async';
+import { LuEye, LuEyeClosed } from "react-icons/lu";
 import SEO from './SEO';
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { refetch } = useAuthContext();
-
   const mutation = useMutation({
     mutationFn: loginUser,
     onSuccess: () => {
@@ -78,11 +78,14 @@ export default function LoginPage() {
           <TextInput
             label="Password"
             name="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={form.password}
             onChange={handleChange}
             error={errors.password}
             required
+            rightSection={<div onClick={() => setShowPassword(prev => !prev)} style={{ cursor: 'pointer' }}>
+              {showPassword ? <LuEyeClosed size={18} /> : <LuEye size={18} />}
+            </div>}
           />
           <Button type="submit" fullWidth loading={mutation.isPending}>
             Login
