@@ -242,7 +242,7 @@ exports.getLeads = async (req, res) => {
       where: { ...where, userId },
       offset: (page - 1) * limit,
       limit,
-      order: [["created_at", "DESC"]],
+      order: [["created_at", "DESC"], ["id", "ASC"]],
     });
     res.json({
       data: leads.rows,
