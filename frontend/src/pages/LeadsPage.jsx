@@ -140,7 +140,7 @@ export default function LeadsPage() {
       toast.success('Lead deleted');
       refetch();
     } catch (err) {
-      toast.error(err?.response?.data?.message || 'Error deleting lead');
+      toast.error(err?.message || 'Error deleting lead');
     }
   };
 
@@ -216,7 +216,7 @@ export default function LeadsPage() {
       setModalOpen(false);
       refetch();
     } catch (err) {
-      toast.error(err?.response?.data?.message || 'Error');
+      toast.error(err?.message || 'Error');
     }
   }
 
@@ -234,7 +234,7 @@ export default function LeadsPage() {
       toast.success('Leads deleted');
       refetch();
     }).catch(err => {
-      toast.error(err?.response?.data?.message || 'Error deleting leads');
+      toast.error(err?.message || 'Error deleting leads');
     });
   };
 
@@ -257,7 +257,7 @@ export default function LeadsPage() {
       setFileInputKey(prev => prev + 1);
 
     } catch (err) {
-      toast.error(err?.response?.data?.message || 'Invalid JSON or error importing leads');
+      toast.error(err?.message || 'Invalid JSON or error importing leads');
       console.error('Import error:', err);
       setFileInputKey(prev => prev + 1);
     }

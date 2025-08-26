@@ -25,7 +25,7 @@ export default function RegisterPage() {
       navigate('/');
     },
     onError: (err) => {
-      toast.error(err?.response?.data?.message || 'Registration failed');
+      toast.error(err?.message || 'Registration failed');
     },
   });
 

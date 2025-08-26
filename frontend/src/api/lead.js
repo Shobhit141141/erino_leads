@@ -22,13 +22,19 @@ export const fetchLeads = async (params = {}) => {
     credentials: "include",
   });
 
-  if (!resp.ok) throw new Error("Failed to fetch leads");
+  if (!resp.ok){
+    const err = await resp.json();
+    throw new Error(err.message || "Failed to fetch leads");
+  }
   return await resp.json();
 };
 
 export const fetchLeadById = async (id) => {
   const res = await fetch(`${API_URL}/lead/${id}`, { credentials: "include" });
-  if (!res.ok) throw new Error("Failed to fetch lead");
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || "Failed to fetch lead");
+  }
   return await res.json();
 };
 
@@ -39,7 +45,10 @@ export const createLead = async (data) => {
     credentials: "include",
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Failed to create lead");
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || "Failed to create lead");
+  }
   return await res.json();
 };
 
@@ -50,7 +59,10 @@ export const bulkCreateLeads = async (leads) => {
     credentials: "include",
     body: JSON.stringify({ leads }),
   });
-  if (!res.ok) throw new Error("Failed to bulk create leads");
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || "Failed to bulk create leads");
+  }
   return await res.json();
 };
 
@@ -61,7 +73,10 @@ export const updateLead = async ({ id, ...data }) => {
     credentials: "include",
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Failed to update lead");
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || "Failed to update lead");
+  }
   return await res.json();
 };
 
@@ -70,7 +85,10 @@ export const deleteLead = async (id) => {
     method: "DELETE",
     credentials: "include",
   });
-  if (!res.ok) throw new Error("Failed to delete lead");
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || "Failed to delete lead");
+  }
   return await res.json();
 };
 
@@ -81,6 +99,9 @@ export const bulkDeleteLeads = async (ids) => {
     credentials: "include",
     body: JSON.stringify({ ids }),
   });
-  if (!res.ok) throw new Error("Failed to bulk delete leads");
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || "Failed to bulk delete leads");
+  }
   return await res.json();
 };
